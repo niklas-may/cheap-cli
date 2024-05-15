@@ -23,6 +23,7 @@ curl -f https://api.mux.com/video/v1/assets/${id} \
   -X DELETE \
   -H "Content-Type: application/json" \
   -u $mux_user \
+  -sS \
 
 if [ $? -ne 0 ]; then
   echo "API request failed"
@@ -30,3 +31,5 @@ if [ $? -ne 0 ]; then
 fi
 
 rm -rf $file_name 
+
+echo "Asset deleted successfully"

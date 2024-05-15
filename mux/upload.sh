@@ -16,6 +16,7 @@ response=$(\
     -X POST \
     -H "Content-Type: application/json" \
     -u $mux_user \
+    -sS \
     -d "$(cat $dir/settings.json)" \
 )
 
@@ -29,13 +30,14 @@ upload_id=$(\
   | jq -r '.data.id'\
 )
 
-curl -v -X PUT -T $1 $url
+curl -sS -v -X PUT -T $1 $url
 
 asset_id=$(\
   curl https://api.mux.com/video/v1/uploads/${upload_id} \
     -X GET \
     -H "Content-Type: application/json" \
     -u $mux_user \
+    -sS \
   | jq -r '.data.asset_id' \
 )
 
@@ -44,12 +46,18 @@ asset_data=$(\
     -X GET \
     -H "Content-Type: application/json" \
     -u $mux_user \
+    -sS \
 )
-
-mkdir -p uploads
 
 file_name=$(basename $1)
 
 id_file="$1.json"
 
 echo $asset_data > $id_file
+
+playback_id=$(\
+  echo $asset_data \
+  | jq -r '.data.playback_ids[0].id'\
+)
+
+echo "Done! Playback ID: $playback_id"
