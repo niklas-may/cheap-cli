@@ -1,4 +1,4 @@
-# Scripts
+# Cheap CLI
 A collection of various scripts
 
 ## Setup (with Zsh) 
